@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gpt-5.6-sol：官方直连和中转接入有什么区别？（2026）</title>
+<meta name="description" content="官方直连与通过中转接入的逐项对比，含中转方案的局限。">
+<meta name="keywords" content="gpt-5.6-sol API 中转站,gpt-5.6-sol API,gpt-5.6-sol价格,OpenAI API中转,模型API,API定价,LLM API,开发者接口">
+<link rel="canonical" href="https://a37836323.github.io/gpt-5-6-sol-api/compare/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="gpt-5.6-sol：官方直连和中转接入有什么区别？（2026）">
+<meta property="og:description" content="官方直连与通过中转接入的逐项对比，含中转方案的局限。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="gpt-5.6-sol：官方直连和中转接入有什么区别？（2026）">
+<meta name="twitter:description" content="官方直连与通过中转接入的逐项对比，含中转方案的局限。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "gpt-5.6-sol API 中转站 2026 配置页，提供基准价、分组倍率说明及定价接口查询示例。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#website",
+      "url": "https://a37836323.github.io/gpt-5-6-sol-api",
+      "name": "gpt-5.6-sol API 中转站 2026：价格、接入与调用示例",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/compare/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "gpt-5.6-sol API 中转站",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "gpt-5.6-sol 用官方直连还是中转？逐项对比",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/compare/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "gpt-5.6-sol API 中转站 2026 配置页，提供基准价、分组倍率说明及定价接口查询示例。",
+      "offers": {
+        "@type": "Offer",
+        "price": "待实测",
+        "priceCurrency": "CNY",
+        "url": "https://api.openlux.ai",
+        "description": "按 token 计费；最终美元价格为基准价乘以用户所在分组倍率，人民币结算信息待实测。"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/compare/#article",
+      "headline": "gpt-5.6-sol 用官方直连还是中转？逐项对比",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-08-04",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/gpt-5-6-sol-api/compare/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fdfdfc;color:#18181b;font-family:Inter,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.shell-block16{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #dcfce7}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#059669;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f0fdf4;padding:.15em .4em;border-radius:2px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f0fdf4;border:1px solid #dcfce7;border-radius:6px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #dcfce7;padding:10px 12px;text-align:left}
+th{background:#f0fdf4;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:square}
+li{margin:.4em 0}
+.row-grid63{background:#f0fdf4;border-left:3px solid #059669;
+border-radius:0 6px 6px 0;padding:14px 18px;margin:1.4em 0}
+.panel-box42{display:inline-block;background:#059669;color:#fff;
+padding:12px 26px;border-radius:6px;font-weight:600;margin:.6em 0}
+.panel-box42:hover{opacity:.88;text-decoration:none}
+.card-note84{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #dcfce7}
+.unit-grid32{border:1px solid #dcfce7;border-radius:6px;
+padding:2px 18px;margin:.8em 0}
+.deck-item80{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .shell-block16{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="shell-block16">
+<p class="box-col39"><a href="https://a37836323.github.io/gpt-5-6-sol-api/">首页</a> ／ gpt-5.6-sol</p>
+<h1>gpt-5.6-sol 用官方直连还是中转？逐项对比</h1>
+<div>
+<h2>官方直连与通过中转接入的资料对比</h2>
+<div class="deck-item80">
+<table>
+<thead><tr><th>对比项</th><th>官方直连</th><th>通过中转接入</th></tr></thead>
+<tbody>
+<tr><td>现有资料中的接入信息</td><td>未提供</td><td>可使用 gpt-5.6-sol 别名调用</td></tr>
+<tr><td>模型价格信息</td><td>未提供</td><td>基准价：输入 $5、输出 $30 / 100 万 token</td></tr>
+<tr><td>缓存命中价格</td><td>未提供</td><td>基准价：$0.5 / 100 万 token</td></tr>
+<tr><td>最终计费规则</td><td>未提供</td><td>基准价乘以用户所在分组倍率</td></tr>
+<tr><td>定价查询来源</td><td>未提供</td><td>面板定价接口 https://api.openlux.ai/api/pricing</td></tr>
+<tr><td>当前在售模型数量</td><td>未提供</td><td>449 个模型在售</td></tr>
+<tr><td>公开价格表覆盖范围</td><td>未提供</td><td>列出调用量最高的 150 个模型，另有 299 个未列出</td></tr>
+</tbody>
+</table>
+</div>
+<p class="row-grid63">通过中转接入会多一跳链路，官方的新模型、功能或接口变更也可能存在同步延迟。现有资料未提供官方直连的价格、延迟和功能信息，实际选型应分别核验。</p>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>查询 gpt-5.6-sol 定价并开始验证调用</p>
+<p><a class="panel-box42" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="button">立即注册并生成密钥</a></p>
+<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">OpenLux</a></p>
+</div>
+<p class="card-note84">最后更新：2026年08月04日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='gpt-5-6-sol-api',L='zh-CN',V=1;
+    // 会话内唯一，仅存在于内存：刷新即变，不落 cookie 也不落 storage
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          // 老浏览器兜底。keepalive 让请求在页面卸载后仍能发完
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    // 预渲染的页面不算一次真实访问，等真正可见了再报
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    // 出站点击：只记去向和位置，不记任何个人信息
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
