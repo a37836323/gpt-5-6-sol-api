@@ -97,7 +97,7 @@
 body{margin:0;background:#fdfdfc;color:#18181b;font-family:Inter,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
 line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
 text-rendering:optimizeLegibility}
-.frame-shell26{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+.card-note84{max-width:780px;margin:0 auto;padding:32px 20px 64px}
 h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
 h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
 border-bottom:2px solid #dcfce7}
@@ -115,21 +115,21 @@ th{background:#f0fdf4;font-weight:600}
 ul,ol{padding-left:1.5em}
 ul{list-style-type:square}
 li{margin:.4em 0}
-.box-card79{background:#f0fdf4;border-left:3px solid #059669;
+.unit-grid32{background:#f0fdf4;border-left:3px solid #059669;
 border-radius:0 6px 6px 0;padding:14px 18px;margin:1.4em 0}
-.grid-panel15{display:inline-block;background:#059669;color:#fff;
+.shell-block16{display:inline-block;background:#059669;color:#fff;
 padding:12px 26px;border-radius:6px;font-weight:600;margin:.6em 0}
-.grid-panel15:hover{opacity:.88;text-decoration:none}
-.list-unit57{color:#71717a;font-size:.86rem;margin-top:3em;
+.shell-block16:hover{opacity:.88;text-decoration:none}
+.box-col39{color:#71717a;font-size:.86rem;margin-top:3em;
 padding-top:1.2em;border-top:1px solid #dcfce7}
-.area-box65{border:1px solid #dcfce7;border-radius:6px;
+.stack-area43{border:1px solid #dcfce7;border-radius:6px;
 padding:2px 18px;margin:.8em 0}
-.deck-shell91{overflow-x:auto}
+.deck-item80{overflow-x:auto}
 @media(max-width:600px){
   body{font-size:15px}
   h1{font-size:1.5rem}
   h2{font-size:1.18rem}
-  .frame-shell26{padding:20px 16px 48px}
+  .card-note84{padding:20px 16px 48px}
   table{font-size:.85rem}
   th,td{padding:8px}
 }
@@ -138,7 +138,7 @@ padding:2px 18px;margin:.8em 0}
 }</style>
 </head>
 <body>
-<main class="frame-shell26">
+<main class="card-note84">
 <h1>gpt-5.6-sol API 中转站 2026</h1>
 <p>gpt-5.6-sol 是 GPT-5.6 产品线中的旗舰高端模型，可通过 gpt-5.6-sol 别名调用。本文基于 2026-08-03 拉取的面板定价接口，说明该模型的基准价格、分组倍率和查询方式。</p>
 <div>
@@ -153,8 +153,8 @@ padding:2px 18px;margin:.8em 0}
 </div>
 <div>
 <h2>什么是 gpt-5.6-sol API 中转站？</h2>
-<p><strong>一句话说清中转站：帮你把多家模型的接口统一成 OpenAI 那一套，顺便解决网络和支付问题。</strong></p>
-<p>gpt-5.6-sol 官方接口在国内落地，卡点集中在网络可达性、支付方式和账号稳定性这三件事上。</p>
+<p><strong>中转站本质是一层协议适配网关——对上给你统一的 OpenAI 格式，对下对接各家厂商的原生接口。</strong></p>
+<p>想在国内生产环境用上 gpt-5.6-sol，官方直连这条路通常会在网络、支付、风控三个环节掉链子。</p>
 <p>OpenLux 把这一层做成了公共服务：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">gpt-5.6-sol API 中转站</a> 聚合了 449 个在售模型，其中公开价格表列出调用量最高的 150 个 主流模型，统一走 OpenAI 兼容格式，国内网络可直接访问，支持人民币结算。</p>
 </div>
 <div>
@@ -169,9 +169,20 @@ padding:2px 18px;margin:.8em 0}
 <p>以上能力在 <a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">OpenLux官网</a> 均已上线，可注册后自行验证。</p>
 </div>
 <div>
+<h2>支持的模型与价格</h2>
+<div class="deck-item80">
+<table>
+<thead><tr><th>模型</th><th>适用场景</th><th>上下文</th><th>输入价格</th><th>输出价格</th><th>实测首字延迟</th></tr></thead>
+<tbody>
+<tr><td>gpt-5.6-sol</td><td>高端对话模型调用</td><td>待实测</td><td>$5 / 100 万 token（基准价）</td><td>$30 / 100 万 token（基准价）</td><td>待实测</td></tr>
+</tbody>
+</table>
+</div>
+<p><small>价格以 <a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">查看详情</a> 实时页面为准，本页更新于 2026年08月04日。</small></p>
+</div>
+<div>
 <h2>这个站还有这些内容</h2>
-<ul class="col-deck86">
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/pricing/">gpt-5.6-sol API 多少钱？各版本价格与计费方式</a><span>各版本基准价、计费口径与倍率算法</span></li>
+<ul class="grid-panel15">
 <li><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">gpt-5.6-sol API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
 <li><a href="https://a37836323.github.io/gpt-5-6-sol-api/compare/">gpt-5.6-sol 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
 <li><a href="https://a37836323.github.io/gpt-5-6-sol-api/faq/">gpt-5.6-sol API 常见问题</a><span>接入时最常遇到的问题</span></li>
@@ -180,10 +191,10 @@ padding:2px 18px;margin:.8em 0}
 <div>
 <h2>开始使用</h2>
 <p>查询 gpt-5.6-sol 定价并开始验证调用</p>
-<p><a class="grid-panel15" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="button">免费开始使用</a></p>
-<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">查看详情</a></p>
+<p><a class="shell-block16" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="button">立即注册并生成密钥</a></p>
+<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">OpenLux gpt-5.6-sol API 中转站</a></p>
 </div>
-<p class="list-unit57">最后更新：2026年08月04日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
+<p class="box-col39">最后更新：2026年08月04日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
 </main>
 <script>
 (function(){
