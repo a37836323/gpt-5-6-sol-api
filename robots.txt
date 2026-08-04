@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://a37836323.github.io/gpt-5-6-sol-api/sitemap.xml
