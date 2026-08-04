@@ -343,6 +343,48 @@ else:
 </div>
 <p class="stack-area43">最后更新：2026年08月04日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
 </main>
-
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='gpt-5-6-sol-api',L='zh-CN',V=1;
+    // 会话内唯一，仅存在于内存：刷新即变，不落 cookie 也不落 storage
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          // 老浏览器兜底。keepalive 让请求在页面卸载后仍能发完
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    // 预渲染的页面不算一次真实访问，等真正可见了再报
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    // 出站点击：只记去向和位置，不记任何个人信息
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
