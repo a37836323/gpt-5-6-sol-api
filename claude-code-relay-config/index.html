@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 Claude Code 如何配置 gpt-5.6-sol 中转</title>
+<meta name="description" content="Claude Code 配置 gpt-5.6-sol 中转前，需先确认当前版本实际支持的端点、鉴权字段与模型映射。本页聚焦配置位置、验证方法、常见限制及多模型切换边界。">
+<meta name="keywords" content="gpt-5.6-sol API 中转站,gpt-5.6-sol API,gpt-5.6-sol价格,OpenAI API中转,模型API,API定价,LLM API,开发者接口">
+<link rel="canonical" href="https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="2026 Claude Code 如何配置 gpt-5.6-sol 中转">
+<meta property="og:description" content="Claude Code 配置 gpt-5.6-sol 中转前，需先确认当前版本实际支持的端点、鉴权字段与模型映射。本页聚焦配置位置、验证方法、常见限制及多模型切换边界。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2026 Claude Code 如何配置 gpt-5.6-sol 中转">
+<meta name="twitter:description" content="Claude Code 配置 gpt-5.6-sol 中转前，需先确认当前版本实际支持的端点、鉴权字段与模型映射。本页聚焦配置位置、验证方法、常见限制及多模型切换边界。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "gpt-5.6-sol API 中转站 2026 配置页，提供基准价、分组倍率说明及定价接口查询示例。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#website",
+      "url": "https://a37836323.github.io/gpt-5-6-sol-api",
+      "name": "gpt-5.6-sol API 中转站 2026：价格、接入与调用示例",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "gpt-5.6-sol API 中转站",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "在 Claude Code 中接入 gpt-5.6-sol：配置位置与验证清单",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "gpt-5.6-sol API 中转站 2026 配置页，提供基准价、分组倍率说明及定价接口查询示例。",
+      "offers": {
+        "@type": "Offer",
+        "price": "待实测",
+        "priceCurrency": "CNY",
+        "url": "https://api.openlux.ai",
+        "description": "按 token 计费；最终美元价格为基准价乘以用户所在分组倍率，人民币结算信息待实测。"
+      }
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/#article",
+      "headline": "在 Claude Code 中接入 gpt-5.6-sol：配置位置与验证清单",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-08-05",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fdfdfc;color:#18181b;font-family:Inter,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.box-frame40{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #dcfce7}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#059669;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f0fdf4;padding:.15em .4em;border-radius:2px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f0fdf4;border:1px solid #dcfce7;border-radius:6px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #dcfce7;padding:10px 12px;text-align:left}
+th{background:#f0fdf4;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:square}
+li{margin:.4em 0}
+.block-box52{background:#f0fdf4;border-left:3px solid #059669;
+border-radius:0 6px 6px 0;padding:14px 18px;margin:1.4em 0}
+.note-grid19{display:inline-block;background:#059669;color:#fff;
+padding:12px 26px;border-radius:6px;font-weight:600;margin:.6em 0}
+.note-grid19:hover{opacity:.88;text-decoration:none}
+.note-list25{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #dcfce7}
+.grid-area17{border:1px solid #dcfce7;border-radius:6px;
+padding:2px 18px;margin:.8em 0}
+.col-deck39{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .box-frame40{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="box-frame40">
+<p class="stack-area43"><a href="https://a37836323.github.io/gpt-5-6-sol-api/">首页</a> ／ gpt-5.6-sol</p>
+<h1>在 Claude Code 中接入 gpt-5.6-sol：配置位置与验证清单</h1>
+<p>现有资料不足以验证 Claude Code 的具体配置文件路径、环境变量名称和中转端点格式，因此不应直接复制网上的配置片段。可以确认的是，面板定价数据中列有 gpt-5.6-sol；实际接入前应以本地 Claude Code 版本和中转站面板返回的字段为准。</p>
+<div>
+<h2>Claude Code 在哪里修改 base_url 和 API key？</h2>
+<p>结论是：本页无法据已知资料确认 Claude Code 中 base_url 与 API key 的确切配置位置。已提供信息只覆盖中转站的模型与定价数据，没有 Claude Code 的版本、配置文档、客户端界面或环境变量约定。</p>
+<p>先在当前安装环境中查看 Claude Code 的设置入口、项目级配置和启动环境。重点确认客户端是否允许替换服务地址，鉴权是否允许使用第三方 key，以及模型名是否可以手动指定；这三项任一项不支持，后续配置都不会生效。</p>
+<h2>Claude Code 的完整中转配置文件应该怎么写？</h2>
+<p>结论是：配置文件内容待实测，不能把未经验证的字段名、路径或 URL 当作可执行配置发布。尤其是 base_url、认证头和模型字段可能随 Claude Code 版本或中转协议而变化。</p>
+<p>准备配置时，应从当前客户端实际读取的配置样例开始，只替换已由面板明确提供的服务地址、key 和模型标识。配置完成后保留原始配置备份，并避免将 key 写入项目仓库、终端历史记录或可共享的日志文件。</p>
+<h2>环境变量接入 Claude Code 应该设置哪些字段？</h2>
+<p>结论是：环境变量名称和取值格式待实测。已知事实没有给出 Claude Code 支持哪些变量，也没有给出该中转站要求的变量名或端点路径。</p>
+<p>验证环境变量方案前，需要确认变量是在启动 Claude Code 的同一进程环境中生效，而不是只写入另一个终端会话。还要检查 GUI 启动、IDE 内启动和 shell 启动是否继承相同环境；它们不一致时，命令行可用并不能证明客户端已经使用该配置。</p>
+<h2>Claude Code 改完中转后怎么确认已经生效？</h2>
+<p>结论是：应以一次可追踪的实际请求和面板侧调用记录共同验证，不能只看配置文件存在或客户端没有报错。请求中实际使用的模型名、鉴权身份和服务地址都需要能够核对。</p>
+<p>建议先发起一个内容简单、便于识别的请求，再检查 Claude Code 日志中是否有可用的请求信息，以及面板是否出现对应调用记录。若客户端提供模型展示或请求详情，也应核对其显示的是 gpt-5.6-sol，而不是默认模型或缓存结果。具体日志位置、验证页面和可观察字段待实测。</p>
+<h2>Claude Code 配中转最容易踩哪些坑？</h2>
+<p>结论是：最需要防范的是协议和模型能力假设不一致。gpt-5.6-sol 在已知定价数据中标记为 OpenAI、chat 类型；这不等于它已经被验证可作为 Claude Code 的替代后端，也不等于客户端的全部工作流都能兼容。</p>
+<p>不要把 Claude 生态的模型命名、消息格式、工具调用行为或认证规则直接套到 gpt-5.6-sol。若出现认证失败、模型未找到、请求格式错误或工具调用异常，应分别确认 key、服务地址、模型映射和请求协议，而不是反复更换单一字段。错误码含义与兼容范围待实测。</p>
+<h2>Claude Code 里怎么切换 gpt-5.6-sol 和其他模型？</h2>
+<p>结论是：多模型切换方式待实测，取决于 Claude Code 是否支持自定义模型列表、配置档案或按会话指定模型。已知面板数据列出 452 个在售模型，其中展示表只覆盖调用量最高的 150 个，不能据此推断 Claude Code 可以展示或切换哪些模型。</p>
+<p>gpt-5.6-sol 是面板数据中列出的模型名，基准价为输入每 100 万 token 5 美元、输出每 100 万 token 30 美元、缓存命中每 100 万 token 0.5 美元；最终价格还取决于用户所在分组倍率。由于本页只讨论 Claude Code 接入，不展开购买、付款和价格选择，应在确认模型映射后再到对应页面处理这些问题。</p>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">OpenLux</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="row-grid63">
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">gpt-5.6-sol API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/compare/">gpt-5.6-sol 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/faq/">gpt-5.6-sol API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-56-sol-buy/">gpt-5.6-sol API 国内怎么购买，价格和付款先看这里</a><span>购买渠道与费用口径</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-payment-methods/">没有国际信用卡，gpt-5.6-sol API 怎么付款</a><span>查看 gpt-5.6-sol 付款方式</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/api-relay-explained/">API 中转站的工作原理：gpt-5.6-sol 请求为何会多经过一层</a><span>了解 API 中转原理</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-cost-comparison/">gpt-5.6-sol 值不值得用：先按实际 token 结构算成本</a><span>核算模型调用成本</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-ban-risk/">使用 gpt-5.6-sol API 会不会被封：中转前该确认什么</a><span>封号与中转风险</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-free-trial/">gpt-5.6-sol API 能免费试用吗：先核验额度，再安排验证</a><span>免费额度与试用边界</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/organization-disabled-cline-error/">Cline 出现 api error 400：从 this organization has been disabled 开始排查</a><span>排查组织禁用报错</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>查询 gpt-5.6-sol 定价并开始验证调用</p>
+<p><a class="note-grid19" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="button">免费开始使用</a></p>
+<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">gpt-5.6-sol API 中转站</a></p>
+</div>
+<p class="note-list25">最后更新：2026年08月05日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='gpt-5-6-sol-api',L='zh-CN',V=1;
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
