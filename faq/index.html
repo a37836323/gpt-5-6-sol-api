@@ -25,7 +25,7 @@
       "@id": "https://api.openlux.ai/#organization",
       "name": "OpenLux",
       "url": "https://api.openlux.ai",
-      "description": "gpt-5.6-sol API 中转站 2026 配置页，提供基准价、分组倍率说明及定价接口查询示例。",
+      "description": "核对 OpenLux 的 gpt-5.6-sol 基准价格、可用分组与接口格式。提供密钥检查和 Responses API 示例，以及注册后的接入步骤。",
       "sameAs": [
         "https://openlux.ai",
         "https://doc.openlux.ai"
@@ -35,7 +35,7 @@
       "@type": "WebSite",
       "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#website",
       "url": "https://a37836323.github.io/gpt-5-6-sol-api",
-      "name": "gpt-5.6-sol API 中转站 2026：价格、接入与调用示例",
+      "name": "gpt-5.6-sol API 中转站 2026：价格、分组与首次调用",
       "inLanguage": "zh-CN",
       "publisher": {
         "@id": "https://api.openlux.ai/#organization"
@@ -71,58 +71,50 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "gpt-5.6-sol 可以通过哪个模型名调用？",
+          "name": "注册后为什么还不能直接调用？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "可以使用 gpt-5.6-sol 作为 API 调用别名。现有资料说明平台会自动处理该别名对应的模型路由。"
+            "text": "注册账号之后，还需要创建有效的 API Key、确认模型可用分组及账户额度。注册成功不等于模型调用已完成。"
           }
         },
         {
           "@type": "Question",
-          "name": "gpt-5.6-sol 的基准输入和输出价格是多少？",
+          "name": "Base URL 应该填什么？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "gpt-5.6-sol 的基准输入价格为 $5 / 100 万 token，基准输出价格为 $30 / 100 万 token。最终价格还需要乘以用户所在分组的倍率。"
+            "text": "OpenAI 兼容客户端通常填写 https://api.openlux.ai/v1；直接发 HTTP 请求时使用完整端点，例如 https://api.openlux.ai/v1/responses。避免重复拼接 /v1。"
           }
         },
         {
           "@type": "Question",
-          "name": "gpt-5.6-sol 的缓存命中价格是多少？",
+          "name": "页面上的基准价就是最终价格吗？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "gpt-5.6-sol 的缓存命中基准价为 $0.5 / 100 万 token。最终缓存命中费用同样按基准价与用户分组倍率计算。"
+            "text": "不是。基准价还要结合实际可用分组倍率、阶梯计费和缓存情况。不要套用模型不支持的分组倍率。"
           }
         },
         {
           "@type": "Question",
-          "name": "最终账单如何计算？",
+          "name": "是否有免费测试额度？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "最终价格等于基准价乘以用户所在分组的倍率。输入、输出和缓存命中分别按各自的基准价计算。"
+            "text": "本文未核验到对所有新用户适用的固定赠送额度。请以注册后账户显示和当前活动规则为准，不把注册当成免费调用承诺。"
           }
         },
         {
           "@type": "Question",
-          "name": "gpt-5.6-sol 在产品线中的定位是什么？",
+          "name": "能直接在 Claude Code 里填写这个模型吗？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "gpt-5.6-sol 是 GPT-5.6 产品线中的旗舰高端模型。现有说明将其规格与早期无后缀的顶层 GPT-5 对应层级进行比较。"
+            "text": "不能仅凭模型名确认兼容性。当前价格接口列出 openai 和 openai-response，并未列出 Anthropic 端点；接入 Claude Code 需要另外核验协议适配和工具调用支持。"
           }
         },
         {
           "@type": "Question",
-          "name": "面板只支持公开表中的 150 个模型吗？",
+          "name": "这些资料什么时候核对的？",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "不是，面板在售模型总数为 449 个。公开价格表只列出了调用量最高的 150 个模型，另有 299 个模型未在该表展示。"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "在哪里查询 gpt-5.6-sol 的定价数据？",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "可以查询 https://api.openlux.ai/api/pricing 获取面板定价数据。本文引用的数据拉取时间为 2026-08-03T17:12:59Z，价格与可用状态应以调用时接口返回为准。"
+            "text": "价格与端点资料在 2026-09-08（北京时间）查询 OpenLux /api/pricing。密钥与模型列表已做只读检查，性能、付费生成和客户端完整流程未实测。"
           }
         }
       ]
@@ -134,21 +126,14 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Any",
       "url": "https://api.openlux.ai",
-      "description": "gpt-5.6-sol API 中转站 2026 配置页，提供基准价、分组倍率说明及定价接口查询示例。",
-      "offers": {
-        "@type": "Offer",
-        "price": "待实测",
-        "priceCurrency": "CNY",
-        "url": "https://api.openlux.ai",
-        "description": "按 token 计费；最终美元价格为基准价乘以用户所在分组倍率，人民币结算信息待实测。"
-      }
+      "description": "核对 OpenLux 的 gpt-5.6-sol 基准价格、可用分组与接口格式。提供密钥检查和 Responses API 示例，以及注册后的接入步骤。"
     },
     {
       "@type": "TechArticle",
       "@id": "https://a37836323.github.io/gpt-5-6-sol-api/faq/#article",
       "headline": "gpt-5.6-sol API 常见问题",
       "datePublished": "2026-08-03",
-      "dateModified": "2026-08-05",
+      "dateModified": "2026-09-08",
       "inLanguage": "zh-CN",
       "author": {
         "@id": "https://api.openlux.ai/#organization"
@@ -165,7 +150,7 @@
 body{margin:0;background:#fdfdfc;color:#18181b;font-family:Inter,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
 line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
 text-rendering:optimizeLegibility}
-.shell-block16{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+.frame-shell26{max-width:780px;margin:0 auto;padding:32px 20px 64px}
 h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
 h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
 border-bottom:2px solid #dcfce7}
@@ -183,21 +168,21 @@ th{background:#f0fdf4;font-weight:600}
 ul,ol{padding-left:1.5em}
 ul{list-style-type:square}
 li{margin:.4em 0}
-.card-note84{background:#f0fdf4;border-left:3px solid #059669;
+.box-card79{background:#f0fdf4;border-left:3px solid #059669;
 border-radius:0 6px 6px 0;padding:14px 18px;margin:1.4em 0}
-.panel-box42{display:inline-block;background:#059669;color:#fff;
+.grid-panel15{display:inline-block;background:#059669;color:#fff;
 padding:12px 26px;border-radius:6px;font-weight:600;margin:.6em 0}
-.panel-box42:hover{opacity:.88;text-decoration:none}
-.unit-grid32{color:#71717a;font-size:.86rem;margin-top:3em;
+.grid-panel15:hover{opacity:.88;text-decoration:none}
+.list-unit57{color:#71717a;font-size:.86rem;margin-top:3em;
 padding-top:1.2em;border-top:1px solid #dcfce7}
 .row-grid63{border:1px solid #dcfce7;border-radius:6px;
 padding:2px 18px;margin:.8em 0}
-.box-col39{overflow-x:auto}
+.area-box65{overflow-x:auto}
 @media(max-width:600px){
   body{font-size:15px}
   h1{font-size:1.5rem}
   h2{font-size:1.18rem}
-  .shell-block16{padding:20px 16px 48px}
+  .frame-shell26{padding:20px 16px 48px}
   table{font-size:.85rem}
   th,td{padding:8px}
 }
@@ -206,42 +191,42 @@ padding:2px 18px;margin:.8em 0}
 }</style>
 </head>
 <body>
-<main class="shell-block16">
-<p class="stack-area43"><a href="https://a37836323.github.io/gpt-5-6-sol-api/">首页</a> ／ gpt-5.6-sol</p>
+<main class="frame-shell26">
+<p class="deck-shell91"><a href="https://a37836323.github.io/gpt-5-6-sol-api/">首页</a> ／ gpt-5.6-sol</p>
 <h1>gpt-5.6-sol API 常见问题</h1>
+<p><a class="grid-panel15" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="register-top">注册 OpenLux 账号</a></p><p><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">接入步骤与可直接复制的代码</a></p>
 <div>
 <h2>常见问题</h2>
-<div class="row-grid63"><h3>gpt-5.6-sol 可以通过哪个模型名调用？</h3><p>可以使用 gpt-5.6-sol 作为 API 调用别名。现有资料说明平台会自动处理该别名对应的模型路由。</p></div>
-<div class="row-grid63"><h3>gpt-5.6-sol 的基准输入和输出价格是多少？</h3><p>gpt-5.6-sol 的基准输入价格为 $5 / 100 万 token，基准输出价格为 $30 / 100 万 token。最终价格还需要乘以用户所在分组的倍率。</p></div>
-<div class="row-grid63"><h3>gpt-5.6-sol 的缓存命中价格是多少？</h3><p>gpt-5.6-sol 的缓存命中基准价为 $0.5 / 100 万 token。最终缓存命中费用同样按基准价与用户分组倍率计算。</p></div>
-<div class="row-grid63"><h3>最终账单如何计算？</h3><p>最终价格等于基准价乘以用户所在分组的倍率。输入、输出和缓存命中分别按各自的基准价计算。</p></div>
-<div class="row-grid63"><h3>gpt-5.6-sol 在产品线中的定位是什么？</h3><p>gpt-5.6-sol 是 GPT-5.6 产品线中的旗舰高端模型。现有说明将其规格与早期无后缀的顶层 GPT-5 对应层级进行比较。</p></div>
-<div class="row-grid63"><h3>面板只支持公开表中的 150 个模型吗？</h3><p>不是，面板在售模型总数为 449 个。公开价格表只列出了调用量最高的 150 个模型，另有 299 个模型未在该表展示。</p></div>
-<div class="row-grid63"><h3>在哪里查询 gpt-5.6-sol 的定价数据？</h3><p>可以查询 https://api.openlux.ai/api/pricing 获取面板定价数据。本文引用的数据拉取时间为 2026-08-03T17:12:59Z，价格与可用状态应以调用时接口返回为准。</p></div>
-<p>还有其他问题？完整文档与客服入口见 <a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">OpenLux</a>。</p>
+<div class="row-grid63"><h3>注册后为什么还不能直接调用？</h3><p>注册账号之后，还需要创建有效的 API Key、确认模型可用分组及账户额度。注册成功不等于模型调用已完成。</p></div>
+<div class="row-grid63"><h3>Base URL 应该填什么？</h3><p>OpenAI 兼容客户端通常填写 https://api.openlux.ai/v1；直接发 HTTP 请求时使用完整端点，例如 https://api.openlux.ai/v1/responses。避免重复拼接 /v1。</p></div>
+<div class="row-grid63"><h3>页面上的基准价就是最终价格吗？</h3><p>不是。基准价还要结合实际可用分组倍率、阶梯计费和缓存情况。不要套用模型不支持的分组倍率。</p></div>
+<div class="row-grid63"><h3>是否有免费测试额度？</h3><p>本文未核验到对所有新用户适用的固定赠送额度。请以注册后账户显示和当前活动规则为准，不把注册当成免费调用承诺。</p></div>
+<div class="row-grid63"><h3>能直接在 Claude Code 里填写这个模型吗？</h3><p>不能仅凭模型名确认兼容性。当前价格接口列出 openai 和 openai-response，并未列出 Anthropic 端点；接入 Claude Code 需要另外核验协议适配和工具调用支持。</p></div>
+<div class="row-grid63"><h3>这些资料什么时候核对的？</h3><p>价格与端点资料在 2026-09-08（北京时间）查询 OpenLux /api/pricing。密钥与模型列表已做只读检查，性能、付费生成和客户端完整流程未实测。</p></div>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://doc.openlux.ai" rel="nofollow noopener" data-cta="docs">常见问题</a>。</p>
 </div>
 <div>
 <h2>这个站还有这些内容</h2>
 <ul class="deck-item80">
 <li><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">gpt-5.6-sol API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
 <li><a href="https://a37836323.github.io/gpt-5-6-sol-api/compare/">gpt-5.6-sol 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-56-sol-buy/">gpt-5.6-sol API 国内怎么购买，价格和付款先看这里</a><span>购买渠道与费用口径</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-payment-methods/">没有国际信用卡，gpt-5.6-sol API 怎么付款</a><span>查看 gpt-5.6-sol 付款方式</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/api-relay-explained/">API 中转站的工作原理：gpt-5.6-sol 请求为何会多经过一层</a><span>了解 API 中转原理</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/">在 Claude Code 中接入 gpt-5.6-sol：配置位置与验证清单</a><span>Claude Code 配置说明</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-cost-comparison/">gpt-5.6-sol 值不值得用：先按实际 token 结构算成本</a><span>核算模型调用成本</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-ban-risk/">使用 gpt-5.6-sol API 会不会被封：中转前该确认什么</a><span>封号与中转风险</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-free-trial/">gpt-5.6-sol API 能免费试用吗：先核验额度，再安排验证</a><span>免费额度与试用边界</span></li>
-<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/organization-disabled-cline-error/">Cline 出现 api error 400：从 this organization has been disabled 开始排查</a><span>排查组织禁用报错</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-56-sol-buy/">gpt-5.6-sol API 怎么购买和接入</a><span>从注册到首次请求</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-payment-methods/">gpt-5.6-sol API 付款前要核对什么</a><span>付款与额度核对</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/api-relay-explained/">API 中转站如何转发 gpt-5.6-sol 请求</a><span>了解接口和请求链路</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/">Claude Code 接入 gpt-5.6-sol 前：先核对协议兼容性</a><span>Claude Code 协议核对</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-cost-comparison/">gpt-5.6-sol API 费用怎么算：基准价、分组和阶梯</a><span>核对实际费用</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-ban-risk/">gpt-5.6-sol API 使用前应确认哪些账户规则</a><span>账户与使用规则</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-free-trial/">gpt-5.6-sol API 能免费试用吗？先核验账户额度</a><span>免费额度与首次调用</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/organization-disabled-cline-error/">Cline 提示 organization has been disabled：如何定位问题</a><span>定位组织禁用错误</span></li>
 </ul>
 </div>
 <div>
 <h2>开始使用</h2>
-<p>查询 gpt-5.6-sol 定价并开始验证调用</p>
-<p><a class="panel-box42" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="button">立即注册并生成密钥</a></p>
-<p>官方地址：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">gpt-5.6-sol API 中转站</a></p>
+<p>注册完成后，进入控制台创建 API Key，核对模型分组与账户额度，再按本站接入指南运行请求。已经注册的用户可以直接查看接入指南。</p>
+<p><a class="grid-panel15" href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="register-bottom">注册 OpenLux 账号</a></p>
+<p>账号入口：<a href="https://api.openlux.ai/register?channel=c_8qh1bdxz" rel="nofollow noopener" data-cta="link">注册 OpenLux 账号</a></p>
 </div>
-<p class="unit-grid32">最后更新：2026年08月05日　|　本页由 OpenLux 编写并维护。<br>所有性能与价格数据来自实测，如与官网不一致，以官网实时页面为准。</p>
+<p class="list-unit57">最后更新：2026年09月08日　|　本页由 OpenLux 编写并维护。<br>价格资料以文中标注的数据来源和查询日期为准；未完成的性能测试不作为承诺。实际可用性与计费以控制台为准。</p>
 </main>
 <script>
 (function(){
