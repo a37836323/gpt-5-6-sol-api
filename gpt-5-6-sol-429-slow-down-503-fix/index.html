@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理</title>
+<meta name="description" content="调用 gpt-5.6-sol 遇到 429 slow_down、503 server_is_overloaded 或额度类 429 时，按 OpenAI 官方错误码说明区分原因，正确使用 Retry-After、退避重试和逐步加量。">
+<meta name="keywords" content="gpt-5.6-sol API 中转站,gpt-5.6-sol API,gpt-5.6-sol价格,OpenAI API中转,模型API,API定价,LLM API,开发者接口">
+<link rel="canonical" href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-429-slow-down-503-fix/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理">
+<meta property="og:description" content="调用 gpt-5.6-sol 遇到 429 slow_down、503 server_is_overloaded 或额度类 429 时，按 OpenAI 官方错误码说明区分原因，正确使用 Retry-After、退避重试和逐步加量。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理">
+<meta name="twitter:description" content="调用 gpt-5.6-sol 遇到 429 slow_down、503 server_is_overloaded 或额度类 429 时，按 OpenAI 官方错误码说明区分原因，正确使用 Retry-After、退避重试和逐步加量。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "核对 OpenLux 的 gpt-5.6-sol 基准价格、可用分组与接口格式。提供密钥检查和 Responses API 示例，以及注册后的接入步骤。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#website",
+      "url": "https://a37836323.github.io/gpt-5-6-sol-api",
+      "name": "gpt-5.6-sol API 中转站 2026：价格、分组与首次调用",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-429-slow-down-503-fix/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "gpt-5.6-sol API 中转站",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-429-slow-down-503-fix/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "核对 OpenLux 的 gpt-5.6-sol 基准价格、可用分组与接口格式。提供密钥检查和 Responses API 示例，以及注册后的接入步骤。"
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-429-slow-down-503-fix/#article",
+      "headline": "gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-10-26",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-429-slow-down-503-fix/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fdfdfc;color:#18181b;font-family:Inter,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.grid-panel15{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #dcfce7}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#059669;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f0fdf4;padding:.15em .4em;border-radius:2px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f0fdf4;border:1px solid #dcfce7;border-radius:6px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #dcfce7;padding:10px 12px;text-align:left}
+th{background:#f0fdf4;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:square}
+li{margin:.4em 0}
+.frame-shell26{background:#f0fdf4;border-left:3px solid #059669;
+border-radius:0 6px 6px 0;padding:14px 18px;margin:1.4em 0}
+.deck-item80{display:inline-block;background:#059669;color:#fff;
+padding:12px 26px;border-radius:6px;font-weight:600;margin:.6em 0}
+.deck-item80:hover{opacity:.88;text-decoration:none}
+.box-card79{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #dcfce7}
+.list-unit57{border:1px solid #dcfce7;border-radius:6px;
+padding:2px 18px;margin:.8em 0}
+.area-box65{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .grid-panel15{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="grid-panel15">
+<p data-notice="price-20261025" style="margin:0 0 16px;padding:10px 14px;border:1px solid #f0c36d;background:#fff8e6;color:#5c4400;border-radius:6px;font-size:14px;line-height:1.6">本页价格与模型信息可能已有变化，请以官网为准：<a href="https://www.openlux.ai/pricing?utm_source=gpt-5-6-sol-api&amp;utm_medium=satellite&amp;utm_campaign=price_notice" style="color:#0b57d0">OpenLux 官网价格页</a></p>
+<p class="deck-shell91"><a href="https://a37836323.github.io/gpt-5-6-sol-api/">首页</a> ／ gpt-5.6-sol</p>
+<h1>gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理</h1>
+<p>OpenAI 在 2026-09-02 的更新日志中调整了错误返回：流量增长过快会返回 429，错误码为 slow_down；模型临时过载会返回 503，错误码为 server_is_overloaded。两种情况都可能带 Retry-After 响应头。本页依据官方错误码文档、限流指南和 openai-python 说明，整理调用 gpt-5.6-sol 时如何区分这几类错误、哪些可以重试、哪些重试也没用。</p>
+<p><a class="deck-item80" href="https://api.openlux.ai/register?channel=c_4yupewrk" rel="nofollow noopener" data-cta="register-top">注册 OpenLux 账号</a></p><p><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">接入步骤与可直接复制的代码</a></p>
+<div>
+<h2>先看 error.code，不要只看 HTTP 状态码</h2>
+<p>同样是 429，原因可能完全不同。官方错误码文档列出的 429 包括：请求太快触发的普通限流（Rate limit reached）、错误码为 slow_down 的流量增长过快、预付额度用完的 credit_balance_exhausted，以及组织或项目达到花费上限的 organization_spend_limit_exceeded、project_spend_limit_exceeded、organization_usage_limit_exceeded。503 中错误码为 server_is_overloaded 的情况，表示所请求的模型暂时过载。</p>
+<p>所以排查第一步是把响应体里的 error.type 和 error.code 记下来。官方特别提示：额度类错误要看 error.code，因为 error.type 仍可能是 insufficient_quota。用 openai-python 时，429 会抛出 RateLimitError，503 会抛出 InternalServerError，两者都要捕获并检查错误码，不能用同一套逻辑处理。</p>
+<p>建议同时记录发生时间（含时区）、模型名 gpt-5.6-sol、调用的接口（Responses 或 Chat Completions）和请求 ID。openai-python 的成功响应可以读 _request_id，失败时捕获 APIStatusError 后读 request_id。</p>
+<h2>429 slow_down：没超过 RPM、TPM 也可能出现</h2>
+<p>官方说明 slow_down 的含义是请求速率增长得太快，并明确写到：即使流量仍在每分钟请求数（RPM）和每分钟 token 数（TPM）限额之内，也可能收到这个错误。因此看到 slow_down 时，不要只去对照限额表，而要看最近是否突然放量，例如批量任务刚启动、并发数一下子调高、或者多个服务同时开始调用。</p>
+<p>官方给的处理办法有四条：有 Retry-After 响应头就按它等待；没有这个响应头就拉长重试间隔并加随机抖动；先把速率降下来，再逐步加回去；尽量让流量保持平稳。官方还给出一个经验值：当输入流量达到每分钟 100 万 token 以上时，每 15 分钟增幅不超过 50%，具体阈值因模型和当时情况而异。</p>
+<p>实际操作上，可以把任务改成分批启动，用队列控制并发上限，按时间段逐级提高并发，而不是一次性把所有任务同时发出。</p>
+<h2>503 server_is_overloaded：模型临时过载</h2>
+<p>server_is_overloaded 的错误类型是 service_unavailable_error，官方解释为所请求的模型暂时过载。处理方式是遵守 Retry-After 后再重试；如果持续出现，到 status.openai.com 查看服务状态。</p>
+<p>官方在更新日志里说明，把 slow_down 和 server_is_overloaded 分成两个错误码，就是为了让应用区分「流量增长过快」和「模型临时过载」。对 503 的合理做法是设置有上限的重试，超过上限就把任务放回队列稍后处理，并在日志里单独统计 503 的出现时间，便于和服务状态页对照。普通的 500 服务器错误，官方建议是稍等后重试并查看状态页。</p>
+<h2>额度和花费类 429：重试不会恢复</h2>
+<p>官方错误码文档写明：重试计费、花费上限或额度类错误，不会恢复 API 访问。credit_balance_exhausted 需要先补充额度；organization_spend_limit_exceeded 和 project_spend_limit_exceeded 需要调高或取消上限，或者等每月重置，其中项目级上限只影响该项目；organization_usage_limit_exceeded 是 OpenAI 为组织设定的限制，与自己设置的花费上限不同，需要申请提高或联系支持。</p>
+<p>因此重试逻辑里应该把这些错误码排除在外：遇到就停止该任务、发出告警，由人处理账户问题。否则自动重试只会持续制造失败请求。</p>
+<h2>重试怎么写才不会放大问题</h2>
+<p>第一，遵守 Retry-After。官方要求：响应带有 Retry-After 时，至少等待它指定的时长；没有这个响应头或取值无效时，使用带随机抖动的指数退避，并限制重试次数和总重试时间。如果要求的等待时间超过你能接受的上限，应把请求延后处理，而不是提前重试。</p>
+<p>第二，失败的请求也计入每分钟限额。官方限流指南提醒，不停地重发同一个请求并不能解决问题，反而会继续消耗限额。</p>
+<p>第三，不要在 SDK 重试之外再叠一层重试。openai-python 默认会对连接错误、408、409、429 和 5xx 自动重试 2 次，并使用较短的指数退避。可以用 OpenAI(max_retries=0) 关闭 SDK 重试、改由自己的队列统一控制，也可以用 client.with_options(max_retries=5) 单独调整某次调用。官方错误码文档还提到，当服务端要求的等待时间较长时，Python 库在某些版本中可能不再自动重试，应用层的重试要尊重原始等待时间。流式输出读取过程中的失败不会被自动重试，因为重放请求可能产生重复输出。</p>
+<p>第四，把 max_tokens 设在接近实际需要的值。限流指南说明，限额按 max_tokens 与按请求字符数估算的 token 数中较大的一个计算，设得过大会更快用完 TPM。</p>
+<h2>通过中转调用时，先确认错误来自哪一层</h2>
+<p>如果你通过 OpenLux 这类中转平台调用 gpt-5.6-sol，返回的 429 或 503 可能来自平台本身（例如账户额度、分组或平台侧的频率限制），也可能来自上游服务。本页不保证平台会原样透传 slow_down 或 server_is_overloaded 错误码，x-ratelimit 系列响应头和 Retry-After 也不一定出现，一切以你实际收到的响应为准。</p>
+<p>排查时先保存完整的错误响应体和响应头（注意去掉 API Key），再到控制台查看对应时间的使用记录和账户额度。如果错误体中没有 slow_down 或 server_is_overloaded，就不要套用本页对应的结论；带着时间、模型名和错误内容联系平台客服核对，不要发送完整密钥。</p>
+<h2>处理完成后如何确认已经恢复</h2>
+<p>可以按以下标准确认：降速或重试后，同一批任务不再出现 slow_down；503 只在个别时段零星出现，并能在 Retry-After 指定时间后成功；额度类 429 在补充额度或调整上限之后不再出现；日志里每个失败请求都有错误码、时间和请求 ID，重试次数没有超过设定上限。</p>
+<p>直连 OpenAI 时，还可以查看响应头 x-ratelimit-remaining-requests 和 x-ratelimit-remaining-tokens，确认剩余额度不再贴近 0。官方限流指南说明，限额按组织和项目设定，并且随模型不同而不同；直连时，对于不需要实时返回的任务，可以考虑 Batch 接口：gpt-5.6-sol 的模型页列出了 Batch，限流指南说明 Batch API 不占用同步调用的限额。通过中转调用时，是否提供 Batch 以平台说明为准。</p>
+<h2>参考资料</h2>
+<p>OpenAI 更新日志（2026-09-02 错误返回调整）：https://developers.openai.com/api/docs/changelog</p>
+<p>OpenAI 错误码文档：https://developers.openai.com/api/docs/guides/error-codes</p>
+<p>OpenAI 限流指南：https://developers.openai.com/api/docs/guides/rate-limits</p>
+<p>gpt-5.6-sol 模型页：https://developers.openai.com/api/docs/models/gpt-5.6-sol</p>
+<p>openai-python README（重试与错误类型）：https://github.com/openai/openai-python/blob/main/README.md</p>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://doc.openlux.ai" rel="nofollow noopener" data-cta="docs">常见问题</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="row-grid63">
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">gpt-5.6-sol API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/compare/">gpt-5.6-sol 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/faq/">gpt-5.6-sol API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-56-sol-buy/">gpt-5.6-sol API 怎么购买和接入</a><span>从注册到首次请求</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-payment-methods/">gpt-5.6-sol API 付款前要核对什么</a><span>付款与额度核对</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/api-relay-explained/">API 中转站如何转发 gpt-5.6-sol 请求</a><span>了解接口和请求链路</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/">Claude Code 接入 gpt-5.6-sol 前：先核对协议兼容性</a><span>Claude Code 协议核对</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-cost-comparison/">gpt-5.6-sol API 费用怎么算：基准价、分组和阶梯</a><span>核对实际费用</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-ban-risk/">gpt-5.6-sol API 使用前应确认哪些账户规则</a><span>账户与使用规则</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-free-trial/">gpt-5.6-sol API 能免费试用吗？先核验账户额度</a><span>免费额度与首次调用</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/organization-disabled-cline-error/">Cline 提示 organization has been disabled：如何定位问题</a><span>定位组织禁用错误</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>注册完成后，进入控制台创建 API Key，核对模型分组与账户额度，再按本站接入指南运行请求。已经注册的用户可以直接查看接入指南。</p>
+<p><a class="deck-item80" href="https://api.openlux.ai/register?channel=c_4yupewrk" rel="nofollow noopener" data-cta="register-bottom">注册 OpenLux 账号</a></p>
+<p>账号入口：<a href="https://api.openlux.ai/register?channel=c_4yupewrk" rel="nofollow noopener" data-cta="link">注册 OpenLux 账号</a></p>
+</div>
+<p class="box-card79">最后更新：2026年10月26日　|　本页由 OpenLux 编写并维护。<br>价格资料以文中标注的数据来源和查询日期为准；未完成的性能测试不作为承诺。实际可用性与计费以控制台为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='gpt-5-6-sol-api',L='zh-CN',V=1;
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
