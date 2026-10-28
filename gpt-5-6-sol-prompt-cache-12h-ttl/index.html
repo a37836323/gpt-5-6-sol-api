@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>gpt-5.6-sol 提示缓存怎么设成 12 小时：prompt_cache_options.ttl 替代 prompt_cache_retention</title>
+<meta name="description" content="按 OpenAI 提示缓存指南和 2026-10-20 更新日志整理：gpt-5.6-sol 等 GPT-5.6 及之后的模型改用 prompt_cache_options.ttl，默认 30m，Responses API 可选 12h；附断点规则、常见没生效原因和用 usage 字段验证的方法。">
+<meta name="keywords" content="gpt-5.6-sol API 中转站,gpt-5.6-sol API,gpt-5.6-sol价格,OpenAI API中转,模型API,API定价,LLM API,开发者接口">
+<link rel="canonical" href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-prompt-cache-12h-ttl/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="gpt-5.6-sol 提示缓存怎么设成 12 小时：prompt_cache_options.ttl 替代 prompt_cache_retention">
+<meta property="og:description" content="按 OpenAI 提示缓存指南和 2026-10-20 更新日志整理：gpt-5.6-sol 等 GPT-5.6 及之后的模型改用 prompt_cache_options.ttl，默认 30m，Responses API 可选 12h；附断点规则、常见没生效原因和用 usage 字段验证的方法。">
+<meta property="og:url" content="https://api.openlux.ai/">
+<meta property="og:site_name" content="OpenLux">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="gpt-5.6-sol 提示缓存怎么设成 12 小时：prompt_cache_options.ttl 替代 prompt_cache_retention">
+<meta name="twitter:description" content="按 OpenAI 提示缓存指南和 2026-10-20 更新日志整理：gpt-5.6-sol 等 GPT-5.6 及之后的模型改用 prompt_cache_options.ttl，默认 30m，Responses API 可选 12h；附断点规则、常见没生效原因和用 usage 字段验证的方法。">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://api.openlux.ai/#organization",
+      "name": "OpenLux",
+      "url": "https://api.openlux.ai",
+      "description": "核对 OpenLux 的 gpt-5.6-sol 基准价格、可用分组与接口格式。提供密钥检查和 Responses API 示例，以及注册后的接入步骤。",
+      "sameAs": [
+        "https://openlux.ai",
+        "https://doc.openlux.ai"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#website",
+      "url": "https://a37836323.github.io/gpt-5-6-sol-api",
+      "name": "gpt-5.6-sol API 中转站 2026：价格、分组与首次调用",
+      "inLanguage": "zh-CN",
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-prompt-cache-12h-ttl/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "OpenLux",
+          "item": "https://api.openlux.ai"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "gpt-5.6-sol API 中转站",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "gpt-5.6-sol 提示缓存设置：用 ttl 选 30 分钟或 12 小时",
+          "item": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-prompt-cache-12h-ttl/"
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/#application",
+      "name": "OpenLux API",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "url": "https://api.openlux.ai",
+      "description": "核对 OpenLux 的 gpt-5.6-sol 基准价格、可用分组与接口格式。提供密钥检查和 Responses API 示例，以及注册后的接入步骤。"
+    },
+    {
+      "@type": "TechArticle",
+      "@id": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-prompt-cache-12h-ttl/#article",
+      "headline": "gpt-5.6-sol 提示缓存设置：用 ttl 选 30 分钟或 12 小时",
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-10-29",
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "publisher": {
+        "@id": "https://api.openlux.ai/#organization"
+      },
+      "mainEntityOfPage": "https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-prompt-cache-12h-ttl/"
+    }
+  ]
+}
+</script>
+<style>*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fdfdfc;color:#18181b;font-family:Inter,"HarmonyOS Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+line-height:1.75;font-size:16px;-webkit-font-smoothing:antialiased;
+text-rendering:optimizeLegibility}
+.grid-panel15{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:1.85rem;line-height:1.4;margin:.2em 0 .6em;letter-spacing:-.01em}
+h2{font-size:1.3rem;margin:2.2em 0 .7em;padding-bottom:.35em;
+border-bottom:2px solid #dcfce7}
+h3{font-size:1.08rem;margin:1.6em 0 .5em}
+a{color:#059669;text-decoration:none}
+a:hover,a:focus-visible{text-decoration:underline}
+code{background:#f0fdf4;padding:.15em .4em;border-radius:2px;
+font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre{background:#f0fdf4;border:1px solid #dcfce7;border-radius:6px;
+padding:16px;overflow-x:auto;font-size:.86rem;line-height:1.6}
+pre code{background:none;padding:0}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:.94rem}
+th,td{border:1px solid #dcfce7;padding:10px 12px;text-align:left}
+th{background:#f0fdf4;font-weight:600}
+ul,ol{padding-left:1.5em}
+ul{list-style-type:square}
+li{margin:.4em 0}
+.frame-shell26{background:#f0fdf4;border-left:3px solid #059669;
+border-radius:0 6px 6px 0;padding:14px 18px;margin:1.4em 0}
+.deck-item80{display:inline-block;background:#059669;color:#fff;
+padding:12px 26px;border-radius:6px;font-weight:600;margin:.6em 0}
+.deck-item80:hover{opacity:.88;text-decoration:none}
+.box-card79{color:#71717a;font-size:.86rem;margin-top:3em;
+padding-top:1.2em;border-top:1px solid #dcfce7}
+.list-unit57{border:1px solid #dcfce7;border-radius:6px;
+padding:2px 18px;margin:.8em 0}
+.area-box65{overflow-x:auto}
+@media(max-width:600px){
+  body{font-size:15px}
+  h1{font-size:1.5rem}
+  h2{font-size:1.18rem}
+  .grid-panel15{padding:20px 16px 48px}
+  table{font-size:.85rem}
+  th,td{padding:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}</style>
+</head>
+<body>
+<main class="grid-panel15">
+<p data-notice="price-20261025" style="margin:0 0 16px;padding:10px 14px;border:1px solid #f0c36d;background:#fff8e6;color:#5c4400;border-radius:6px;font-size:14px;line-height:1.6">本页价格与模型信息可能已有变化，请以官网为准：<a href="https://www.openlux.ai/pricing?utm_source=gpt-5-6-sol-api&amp;utm_medium=satellite&amp;utm_campaign=price_notice" style="color:#0b57d0">OpenLux 官网价格页</a></p>
+<p class="deck-shell91"><a href="https://a37836323.github.io/gpt-5-6-sol-api/">首页</a> ／ gpt-5.6-sol</p>
+<h1>gpt-5.6-sol 提示缓存设置：用 ttl 选 30 分钟或 12 小时</h1>
+<p>OpenAI 在 2026-10-20 的更新日志里宣布 API 可以选择 12 小时提示缓存。对 gpt-5.6-sol 这类 GPT-5.6 及之后的模型，缓存时长由 prompt_cache_options.ttl 控制：默认 30m，在 Responses API 里可以设为 12h；早期模型用的 prompt_cache_retention（in_memory、24h）不是这一代模型的设置方式，官方迁移建议是把它换成 prompt_cache_options.ttl。下面按官方提示缓存指南逐项说明怎么设、什么情况下不会生效、怎么从返回的 usage 里确认。</p>
+<p><a class="deck-item80" href="https://api.openlux.ai/register?channel=c_4yupewrk" rel="nofollow noopener" data-cta="register-top">注册 OpenLux 账号</a></p><p><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">接入步骤与可直接复制的代码</a></p>
+<div>
+<h2>官方改了什么：GPT-5.6 及之后的缓存时长参数</h2>
+<p>OpenAI 更新日志 2026-10-20 的条目写明：现在可以在 API 中选择 12 小时提示缓存，适用于 v1/responses，用来让共享的指令、工具和上下文在缓存里保留更久，请求之间隔几个小时也能按缓存输入计费。</p>
+<p>提示缓存指南把规则按模型分成两套。GPT-5.6 及之后的模型：在 Responses API 里设置 prompt_cache_options.ttl 选择最短缓存时长，可选 30m（默认）和 12h，也可以用 prompt_cache_breakpoint.ttl 给单个断点单独指定时长；填写不支持的值会返回 400 invalid_request_error。</p>
+<p>早期模型：使用 prompt_cache_retention，取值 in_memory 或 24h。指南列出的支持 24h 的模型是 gpt-5.5、gpt-5.5-pro、gpt-5.4、gpt-5.2、gpt-5.1 系列、gpt-5 系列和 gpt-4.1，其中没有 GPT-5.6 系列。指南还说明新设置不会改变早期模型的 prompt_cache_retention 参数，并在迁移一节建议把 prompt_cache_retention 换成 prompt_cache_options.ttl。</p>
+<p>所以从 gpt-5.5 之类的旧模型切到 gpt-5.6-sol 时，原来写的 prompt_cache_retention: 24h 不能当成 24 小时缓存来理解，应该改为 prompt_cache_options.ttl，并且只在 30m 和 12h 里选。</p>
+<h2>怎么设置：请求级 ttl、断点和缓存模式</h2>
+<p>最简单的写法是在 Responses 请求体顶层加上 &quot;prompt_cache_options&quot;: {&quot;ttl&quot;: &quot;12h&quot;}，把这次请求写入缓存的默认时长设为 12 小时；不写时就是默认的 30m。</p>
+<p>需要不同内容用不同时长时，可以在输入消息的内容块上加 prompt_cache_breakpoint。指南的示例是：请求级设为 {&quot;mode&quot;: &quot;explicit&quot;, &quot;ttl&quot;: &quot;30m&quot;}，在一段长期不变的 developer 共享资料上放 {&quot;mode&quot;: &quot;explicit&quot;, &quot;ttl&quot;: &quot;12h&quot;} 的断点覆盖默认值，会话上下文用不带 ttl 的断点继承 30m，最后的当前问题不放断点、不写缓存。</p>
+<p>prompt_cache_options.mode 有 implicit 和 explicit 两种。implicit 模式下，OpenAI 会在最新一条符合条件的消息末尾自动放一个断点，符合条件的是用户消息、连续工具返回里的最后一条、开头 developer 消息块里的最后一条。explicit 模式只认你自己放的断点；指南特别提醒，explicit 模式下一个断点都没放，这次请求就不使用提示缓存，也不产生缓存写入。</p>
+<p>其他限制：每个请求最多产生 4 次缓存写入，implicit 模式的自动断点占其中 1 个；顶层 instructions 里不能放显式断点；additional_tools 输入项目前不接受 prompt_cache_breakpoint。12h 在指南里只写了 Responses API，需要 12 小时缓存时请走 /v1/responses。</p>
+<h2>什么时候值得设 12 小时</h2>
+<p>按更新日志的说法，12h 适合同一段指令、工具定义和上下文会被反复使用、但请求之间间隔可能超过默认 30 分钟的场景，例如每隔几小时跑一批任务、复用同一份长系统提示的工作流。请求本来就很密集时，默认 30m 往往已经够用。</p>
+<p>计费上要注意：对 GPT-5.6 及之后的模型，缓存写入本身按高于普通输入的费率计费，12h 写入的费率又高于 30m 写入；读取缓存的费率两种时长相同。另外 prewarm（只预热缓存、不生成输出）写入的 token 也按所选时长的写入费率计费。具体单价以 OpenAI 官网价格页和 OpenLux 价格页为准。</p>
+<p>指南还写明 12h 是最短保留时长，不是删除期限，OpenAI 可能保留得更久，但这不改变数据保留上限；ZDR 组织同样可以使用全部提示缓存功能。</p>
+<p>缓存有最低长度：GPT-5.6 及之后的模型最少 1,024 个 token 才会缓存，OpenAI 隐藏的系统 token 不计入。前缀不到这个长度，设 12h 也不会有缓存写入。</p>
+<h2>设了 12h 还是没命中：常见原因</h2>
+<p>前缀没有完全一致。指南写明缓存复用要求整个渲染后的前缀都匹配；工具的名称、描述、schema、顺序有任何变化都算前缀变化；文本、图片、文档也都在缓存内容里。时间戳、请求 ID 这类每次都变的内容要放到最后，不要放进共享前缀。</p>
+<p>改写了已有消息。在已有消息后面追加内容而不是新增一条消息，也可能导致前面缓存的前缀无法复用；指南建议保留完整的对话历史，按追加的方式更新工具。</p>
+<p>切到 explicit 模式但没放断点，或者只在顶层 instructions 里想放断点。这两种情况都不会产生对应的缓存写入。</p>
+<p>把 prompt_cache_key 当成命中开关。对 GPT-5.6 及之后的模型，指南说明这个键是可选的，只用来按客户或用户分开缓存统计、防止跨用户探测缓存，不承担早期模型那种改善路由的作用。想定位具体是哪一处变了，可以用官方的 Prompt Cache Diagnostics（2026-09-08 起在 Responses API 对 GPT-5.6 及之后的模型正式可用）。</p>
+<h2>怎么验证 12 小时缓存已经生效</h2>
+<p>看返回的 usage。指南列出的字段是 usage.input_tokens_details 下的 cached_tokens 和 cache_write_tokens，写入还会在 cache_write_tokens_details 里拆成 ttl_30m_tokens 和 ttl_12h_tokens，两者之和等于 cache_write_tokens；cached_tokens 只统计按读取计费的部分，不含按写入计费的 token。</p>
+<p>成功标准分两步：第一次带 ttl: 12h 发出一个前缀超过 1,024 token 的请求，ttl_12h_tokens 应大于 0；之后用完全相同的前缀再发请求，cached_tokens 应大于 0。如果 ttl_12h_tokens 一直是 0、写入都记在 ttl_30m_tokens 里，说明 12h 设置没有作用到这次请求，先检查参数位置、端点是不是 /v1/responses、是否处在 explicit 模式且断点没覆盖到。</p>
+<p>长期看命中率，指南给的算法是累计 cached_tokens 除以累计输入 token，并结合延迟和费用一起观察，平台后台也有 Prompt Caching 仪表盘可以看。</p>
+<p>如果参数写错，例如沿用旧习惯把 ttl 填成 24h，官方写明不支持的值会返回 400 invalid_request_error，按上文改成 30m 或 12h 即可。</p>
+<h2>通过 OpenLux 中转调用 gpt-5.6-sol 时怎么做</h2>
+<p>gpt-5.6-sol 目前在 OpenLux 价格接口中在售，列出的端点类型包括 OpenAI 兼容的 Chat Completions 和 Responses。需要 12 小时缓存时，Base URL 填 https://api.openlux.ai/v1，请求 /v1/responses；Key 在 OpenLux 控制台的「令牌」页创建。</p>
+<p>建议先请求 /v1/models 确认地址和 Key 正确（返回 401 说明 Key 错或没带上），再按上一节的两步法看 usage 字段。本站没有用真实请求逐项核实中转对 prompt_cache_options 和断点参数的处理，是否生效以返回的 usage 为准；费用以 OpenLux 价格页和控制台账单为准。</p>
+<p>本页依据：OpenAI 提示缓存指南 https://developers.openai.com/api/docs/guides/prompt-caching ，OpenAI 更新日志 https://developers.openai.com/api/docs/changelog （2026-10-20、2026-09-08 条目），gpt-5.6-sol 模型页 https://developers.openai.com/api/docs/models/gpt-5.6-sol 。</p>
+<p>还有其他问题？完整文档与客服入口见 <a href="https://doc.openlux.ai" rel="nofollow noopener" data-cta="docs">常见问题</a>。</p>
+</div>
+<div>
+<h2>这个站还有这些内容</h2>
+<ul class="row-grid63">
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/quickstart/">gpt-5.6-sol API 在国内怎么接入？</a><span>接入步骤与可直接复制的代码</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/compare/">gpt-5.6-sol 用官方直连还是中转？逐项对比</a><span>逐项对比，含中转方案的局限</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/faq/">gpt-5.6-sol API 常见问题</a><span>接入时最常遇到的问题</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-56-sol-buy/">gpt-5.6-sol API 怎么购买和接入</a><span>从注册到首次请求</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-payment-methods/">gpt-5.6-sol API 付款前要核对什么</a><span>付款与额度核对</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/api-relay-explained/">API 中转站如何转发 gpt-5.6-sol 请求</a><span>了解接口和请求链路</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/claude-code-relay-config/">Claude Code 接入 gpt-5.6-sol 前：先核对协议兼容性</a><span>Claude Code 协议核对</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-sol-cost-comparison/">gpt-5.6-sol API 费用怎么算：基准价、分组和阶梯</a><span>核对实际费用</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-ban-risk/">gpt-5.6-sol API 使用前应确认哪些账户规则</a><span>账户与使用规则</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt56-sol-free-trial/">gpt-5.6-sol API 能免费试用吗？先核验账户额度</a><span>免费额度与首次调用</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/organization-disabled-cline-error/">Cline 提示 organization has been disabled：如何定位问题</a><span>定位组织禁用错误</span></li>
+<li><a href="https://a37836323.github.io/gpt-5-6-sol-api/gpt-5-6-sol-429-slow-down-503-fix/">gpt-5.6-sol 报 429 slow_down 或 503 server_is_overloaded：怎么区分和处理</a><span>429 与 503 报错处理</span></li>
+</ul>
+</div>
+<div>
+<h2>开始使用</h2>
+<p>注册完成后，进入控制台创建 API Key，核对模型分组与账户额度，再按本站接入指南运行请求。已经注册的用户可以直接查看接入指南。</p>
+<p><a class="deck-item80" href="https://api.openlux.ai/register?channel=c_4yupewrk" rel="nofollow noopener" data-cta="register-bottom">注册 OpenLux 账号</a></p>
+<p>账号入口：<a href="https://api.openlux.ai/register?channel=c_4yupewrk" rel="nofollow noopener" data-cta="link">注册 OpenLux 账号</a></p>
+</div>
+<p class="box-card79">最后更新：2026年10月29日　|　本页由 OpenLux 编写并维护。<br>价格资料以文中标注的数据来源和查询日期为准；未完成的性能测试不作为承诺。实际可用性与计费以控制台为准。</p>
+</main>
+<script>
+(function(){
+  try{
+    var EP='https://tk.openlux.ai/collect',S='gpt-5-6-sol-api',L='zh-CN',V=1;
+    var sid=Math.random().toString(36).slice(2)+Date.now().toString(36);
+    function send(type,extra){
+      try{
+        var p={v:V,t:type,s:S,l:L,sid:sid,
+               r:document.referrer||'',
+               p:location.pathname||'/',
+               q:location.search||'',
+               sw:screen.width||0,
+               tz:(Intl.DateTimeFormat().resolvedOptions()||{}).timeZone||''};
+        for(var k in extra){p[k]=extra[k];}
+        var body=JSON.stringify(p);
+        if(navigator.sendBeacon){
+          navigator.sendBeacon(EP,new Blob([body],{type:'text/plain;charset=UTF-8'}));
+        }else{
+          fetch(EP,{method:'POST',body:body,keepalive:true,mode:'no-cors'});
+        }
+      }catch(e){}
+    }
+    if(document.visibilityState==='prerender'){
+      document.addEventListener('visibilitychange',function h(){
+        if(document.visibilityState!=='prerender'){
+          document.removeEventListener('visibilitychange',h);send('view');
+        }
+      });
+    }else{
+      send('view');
+    }
+    document.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a[data-cta]'):null;
+      if(!a)return;
+      send('click',{c:a.getAttribute('data-cta')||'',h:a.href||''});
+    },{capture:true,passive:true});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
